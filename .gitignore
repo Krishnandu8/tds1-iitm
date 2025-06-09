@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual Environment (for UV, typically named .venv or venv)
+venv/
+.venv/
+
+# OS and Editor related
+.DS_Store
+.ipynb_checkpoints/
+.vscode/ # Optional: If you want to commit VS Code settings specific to the project, remove this.
+
+# Environment variables and sensitive files
+.env # Crucial: Keeps your API keys out of Git!
+*.sqlite3 # If you use a local SQLite database
