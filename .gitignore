@@ -1,19 +1,41 @@
-# Python
+# Python artifacts
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.Python
+.Python/
+*.log
 
-# Virtual Environment (for UV, typically named .venv or venv)
-venv/
+# Virtual Environment
 .venv/
+venv/
+env/ # In case you use a different venv name
 
-# OS and Editor related
+# Editor and OS Specific
 .DS_Store
-.ipynb_checkpoints/
-.vscode/ # Optional: If you want to commit VS Code settings specific to the project, remove this.
+.vscode/           # VS Code settings. Remove this line if you want to commit specific project editor configs.
+.history/          # VS Code Local History
 
-# Environment variables and sensitive files
-.env # Crucial: Keeps your API keys out of Git!
-*.sqlite3 # If you use a local SQLite database
+# Jupyter Notebook related
+.ipynb_checkpoints/
+
+# Environment Variables and Sensitive Data
+.env               # Critical: Your API keys and other secrets
+.flaskenv          # If you use Flask with a .flaskenv file
+auth.json          # Playwright authentication state
+
+# Database related
+*.sqlite3          # Generic SQLite files
+
+# LlamaIndex / Vector Database
+chroma_db/         # Your ChromaDB persistent storage
+
+# Testing related
+*.pytest_cache/
+
+# Playwright specific outputs
+playwright-report/
+test-results/
+
+# Node.js (if applicable, e.g., if you installed npm packages)
+node_modules/
