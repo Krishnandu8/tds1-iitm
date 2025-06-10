@@ -7,6 +7,7 @@ from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.openai import OpenAI
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware # <-- ADDED THIS IMPORT
 
 # Load environment variables from .env file
 load_dotenv()
@@ -30,6 +31,24 @@ app = FastAPI(
     version="0.1.0"
 )
 
+# --- ADDED CORS MIDDLEWARE HERE ---
+origins = [
+    "*", # Allows all origins, useful for development and submission system
+    # "http://localhost",
+    # "http://localhost:8000",
+    # "https://your-frontend-domain.com", # Replace with your actual frontend domain if known
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods (GET, POST, OPTIONS, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
+# --- END CORS MIDDLEWARE ADDITION ---
+
+
 # --- Pydantic Models for Request and Response ---
 class QueryRequest(BaseModel):
     question: str
@@ -37,7 +56,10 @@ class QueryRequest(BaseModel):
 
 class SourceLink(BaseModel):
     url: str
+    # Keep 'title' as per the SourceLink model definition for consistency
+    # The actual data mapping will be handled in the query_ta endpoint
     title: str = "No Title Available" # Default title if not found in metadata
+
 
 class QueryResponse(BaseModel):
     answer: str
@@ -136,7 +158,8 @@ async def query_ta(request: QueryRequest):
             metadata = node.metadata
             url = metadata.get('url')
             # Prioritize 'title' from Markdown frontmatter, fallback to 'topic_title' for Discourse
-            title = metadata.get('title') or metadata.get('topic_title') or url or "No Title Available"
+            # Also check for 'text' from the YAML schema if that's what's available
+            title = metadata.get('title') or metadata.get('topic_title') or metadata.get('text') or url or "No Title Available"
 
             if url:
                 links.append(SourceLink(url=url, title=title))
