@@ -7,7 +7,7 @@ from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.openai import OpenAI
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from dotenv import load_dotenv
-from fastapi.middleware.cors import CORSMiddleware # <-- ADDED THIS IMPORT
+from fastapi.middleware.cors import CORSMiddleware
 
 # Load environment variables from .env file
 load_dotenv()
@@ -135,7 +135,8 @@ async def startup_event():
 
 
 # --- API Endpoint Definition ---
-@app.post("/api/query", response_model=QueryResponse)
+# --- CHANGED ENDPOINT FROM "/api/query" TO "/api/" ---
+@app.post("/api/", response_model=QueryResponse)
 async def query_ta(request: QueryRequest):
     """
     Endpoint to ask a question to the Virtual TA.
