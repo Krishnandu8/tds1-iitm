@@ -56,8 +56,6 @@ class QueryRequest(BaseModel):
 
 class SourceLink(BaseModel):
     url: str
-    # Keep 'title' as per the SourceLink model definition for consistency
-    # The actual data mapping will be handled in the query_ta endpoint
     title: str = "No Title Available" # Default title if not found in metadata
 
 
@@ -135,8 +133,8 @@ async def startup_event():
 
 
 # --- API Endpoint Definition ---
-# --- CHANGED ENDPOINT FROM "/api/query" TO "/api/" ---
-@app.post("/api/", response_model=QueryResponse)
+# --- CHANGED ENDPOINT FROM "/api/" TO "/" ---
+@app.post("/", response_model=QueryResponse)
 async def query_ta(request: QueryRequest):
     """
     Endpoint to ask a question to the Virtual TA.
